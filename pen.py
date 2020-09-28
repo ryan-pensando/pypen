@@ -194,6 +194,37 @@ def get_uplink_metrics(psm_ip, session, psm_tenant, st, et):
 
     return get_web_call_w_payload(url, session, data).json()
 
+def get_pf_metrics(psm_ip, session, psm_tenant, st, et):
+
+    data = {
+    "queries": [
+        {
+            "Kind": "LifMetrics",
+            "start-time": st,
+            "end-time": et
+        }
+                ]
+            }
+
+    url = psm_ip + 'telemetry/v1/metrics'
+
+    return get_web_call_w_payload(url, session, data).json()
+
+def get_cluster_metrics(psm_ip, session, psm_tenant, st, et):
+
+    data = {
+    "queries": [
+        {
+            "Kind": "Cluster",
+            "start-time": st,
+            "end-time": et
+        }
+                ]
+            }
+
+    url = psm_ip + 'telemetry/v1/metrics'
+
+    return get_web_call_w_payload(url, session, data).json()
 
 def get_fw_logs(psm_ip, session, psm_tenant, interface, st, et):
     connector = '_'
@@ -217,8 +248,21 @@ def get_fw_logs(psm_ip, session, psm_tenant, interface, st, et):
 
     return w.content
 
+def get_alerts(psm_ip, session):
 
+    data = {
+    "kind": "AlertPolicy",
+    "api-version": "v1",
+    "meta": {
+        "name": "alertPolicy1",
+        "tenant": "default",
+        "namespace": "default"
+            }
+            }
 
+    url = psm_ip + 'configs/monitoring/v1/alerts'
+
+    return get_web_call_w_payload(url, session, data).json()
 
 
 

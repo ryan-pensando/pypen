@@ -72,6 +72,15 @@ for int in dsc_list:
 uplinkMetrics = pen.get_uplink_metrics(PSM_IP, session, PSM_TENANT, startTime, endTime)
 pen_2_kafka.send_2_kfk(uplinkMetrics)
 
+pfMetrics = pen.get_pf_metrics(PSM_IP, session, PSM_TENANT, startTime, endTime)
+pen_2_kafka.send_2_kfk(uplinkMetrics)
+
+clusterMetrics = pen.get_cluster_metrics(PSM_IP, session, PSM_TENANT, startTime, endTime)
+pen_2_kafka.send_2_kfk(uplinkMetrics)
+
+psmAlerts =  (pen.get_alerts(PSM_IP, session))
+pen_2_kafka.send_2_kfk(psmAlerts)
+
 #pen_2_kafka.dsc_metrics_kfk(PSM_IP, session, PSM_TENANT, dsc_list, startTime, endTime)
 
 #configure PSM based on Pensando published quickstart
