@@ -18,8 +18,6 @@ import json
 
 def get_web_call(url, session):
 
-    #, *payload , if func.__code__.co_kwonlyargcount == 2:, , data = payload[0]
-
     try:
         api_ref = session.get(url)
 
@@ -72,15 +70,6 @@ def post_web_call(url, session, data):
 
     return api_ref
 
-"""
-template 
-def get_x(psm_ip, session):
-    
-    url = psm_ip + ''
-    return get_web_call(url, session).json()
-
-
-"""
 
 def get_psm_workloads(psm_ip, session):
 
@@ -118,16 +107,16 @@ def get_node1(psm_ip, session):
     url = psm_ip + '/configs/cluster/v1/nodes/node1'
     return get_web_call(url, session).json()
 
-def get_alertpolices(psm_ip, session):
-    url = psm_ip + '/configs/monitoring/v1/watch/tenant/default/alertPolicies'
+def get_alertpolices(psm_ip, session, tenant):
+    url = psm_ip + '/configs/monitoring/v1/watch/tenant/{t}/alertPolicies'.format(t=tenant)
     return get_web_call(url, session).json()
 
-def get_networksecuritypolicy(psm_ip, session):
-    url = psm_ip + '/configs/security/v1/tenant/default/networksecuritypolicies'
+def get_networksecuritypolicy(psm_ip, session, tenant):
+    url = psm_ip + '/configs/security/v1/{t}/default/networksecuritypolicies'.format(t=tenant)
     return get_web_call(url, session).json()
 
-def get_users(psm_ip, session):
-    url = psm_ip + '/configs/auth/v1/tenant/default/users'
+def get_users(psm_ip, session, tenant):
+    url = psm_ip + '/configs/auth/v1/tenant/{t}/users'.format(t=tenant)
     return get_web_call(url, session).json()
 
 def get_images(psm_ip, session):

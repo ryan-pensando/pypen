@@ -27,8 +27,8 @@ session = pen_auth.psm_login(PSM_IP, PSM_USERNAME, PSM_PASSWD, PSM_TENANT)
 #session is used to authenicate future API calls to PSM.
 
 #report time
-now = (datetime.datetime.utcnow()) - datetime.timedelta(minutes=15) #report size
-nowDelta = (datetime.datetime.utcnow()) - datetime.timedelta(minutes=10) #report size
+now = (datetime.datetime.utcnow()) - datetime.timedelta(minutes=15)
+nowDelta = (datetime.datetime.utcnow()) - datetime.timedelta(minutes=10)
 #The delta of now and t5 is the size of the report.   Now must alls be before nowDelta
 
 startTime, endTime = utils.return_time(now, nowDelta)
