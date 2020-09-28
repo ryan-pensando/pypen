@@ -100,7 +100,6 @@ def get_flow_export_policy(psm_ip, session):
 def get_dsc(psm_ip, session):
 
     url = psm_ip + 'configs/cluster/v1/distributedservicecards'
-    print (url)
     dsc = get_web_call(url, session).json()
 
     # pull out mac address of DSCs
@@ -177,6 +176,24 @@ def get_dsc_metrics(psm_ip, session, psm_tenant, interface, st, et):
     url = psm_ip + 'telemetry/v1/metrics'
 
     return get_web_call_w_payload(url, session, data).json()
+
+
+def get_uplink_metrics(psm_ip, session, psm_tenant, st, et):
+
+    data = {
+    "queries": [
+        {
+            "Kind": "MacMetrics",
+            "start-time": st,
+            "end-time": et
+        }
+                ]
+            }
+
+    url = psm_ip + 'telemetry/v1/metrics'
+
+    return get_web_call_w_payload(url, session, data).json()
+
 
 def get_fw_logs(psm_ip, session, psm_tenant, interface, st, et):
     connector = '_'

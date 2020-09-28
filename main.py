@@ -13,10 +13,8 @@
 # OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
 # Author: Ryan Tischer ryan@pensando.io
 
-import pen, pen_auth, pen_quickstart, pen_fw_2_kafka, utils, datetime
-from io import BytesIO
-
-from time import gmtime, strftime
+import pen, pen_auth, pen_quickstart, pen_2_kafka, utils
+import datetime
 
 #PSM Vars - Set before use
 PSM_IP = 'https://10.29.75.21/'
@@ -25,15 +23,16 @@ PSM_PASSWD = 'Pensando0$'
 PSM_TENANT = 'default'
 
 
-# Do this first or no worky worky
 session = pen_auth.psm_login(PSM_IP, PSM_USERNAME, PSM_PASSWD, PSM_TENANT)
+#session is used to authenicate future API calls to PSM.
+
 #report time
 now = (datetime.datetime.utcnow()) - datetime.timedelta(minutes=15) #report size
+nowDelta = (datetime.datetime.utcnow()) - datetime.timedelta(minutes=10) #report size
+#The delta of now and t5 is the size of the report.   Now must alls be before nowDelta
 
-t5 = (datetime.datetime.utcnow()) - datetime.timedelta(minutes=10) #report size
-
-startTime, endTime = utils.return_time(now, t5)
-
+startTime, endTime = utils.return_time(now, nowDelta)
+#get PSM formatted report time
 
 # Get PSM workloads example
 #print(pen.get_psm_workloads(PSM_IP, session))
@@ -54,18 +53,28 @@ startTime, endTime = utils.return_time(now, t5)
 
 #get a list of dsc, dsc = is json output, dsc_list = list of DSC
 dsc, dsc_list = pen.get_dsc(PSM_IP, session)
-print(dsc_list)
+
 #send fw logs to kafka
 #pen_fw_2_kafka.fw_kfk(PSM_IP, session, PSM_TENANT, dsc_list, startTime, endTime)
 
 
-#get metric
-print (pen.get_psm_metrics(PSM_IP, session, PSM_TENANT, startTime, endTime))
+#get PSM metric
+psmMetrics = pen.get_psm_metrics(PSM_IP, session, PSM_TENANT, startTime, endTime)
+pen_2_kafka.send_2_kfk(psmMetrics)
 
+
+#Get DSC metrics and send to Kafka
 for int in dsc_list:
-    print (pen.get_dsc_metrics(PSM_IP, session, PSM_TENANT, int, startTime, endTime))
+    data = pen.get_dsc_metrics(PSM_IP, session, PSM_TENANT, int, startTime, endTime)
+    pen_2_kafka.send_2_kfk(data)
 
-pen_fw_2_kafka.dsc_metrics_kfk(PSM_IP, session, PSM_TENANT, dsc_list, startTime, endTime)
+#Get DSC uplink metrics and send to Kafka
+uplinkMetrics = pen.get_uplink_metrics(PSM_IP, session, PSM_TENANT, startTime, endTime)
+pen_2_kafka.send_2_kfk(uplinkMetrics)
+
+#pen_2_kafka.dsc_metrics_kfk(PSM_IP, session, PSM_TENANT, dsc_list, startTime, endTime)
+
+#configure PSM based on Pensando published quickstart
 #print(pen_quickstart.quickstart_create_flow_export_policy(PSM_IP, session))
 
 #create tenant
