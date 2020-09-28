@@ -39,10 +39,18 @@ startTime, endTime = utils.return_time(now, t5)
 
 #get a list of dsc, dsc = is json output, dsc_list = list of DSC
 dsc, dsc_list = pen.get_dsc(PSM_IP, session)
-
+print(dsc_list)
 #send fw logs to kafka
-pen_fw_2_kafka.fw_kfk(PSM_IP, session, PSM_TENANT, dsc_list, startTime, endTime)
+#pen_fw_2_kafka.fw_kfk(PSM_IP, session, PSM_TENANT, dsc_list, startTime, endTime)
 
+
+#get metric
+print (pen.get_psm_metrics(PSM_IP, session, PSM_TENANT, startTime, endTime))
+
+for int in dsc_list:
+    print (pen.get_dsc_metrics(PSM_IP, session, PSM_TENANT, int, startTime, endTime))
+
+pen_fw_2_kafka.dsc_metrics_kfk(PSM_IP, session, PSM_TENANT, dsc_list, startTime, endTime)
 #print(pen_quickstart.quickstart_create_flow_export_policy(PSM_IP, session))
 
 #create tenant

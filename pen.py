@@ -1,6 +1,29 @@
+import json
+
 def get_web_call(url, session):
+
+    #, *payload , if func.__code__.co_kwonlyargcount == 2:, , data = payload[0]
+
     try:
         api_ref = session.get(url)
+
+    except requests.exceptions.Timeout:
+        print('Network Timeout')
+
+    except requests.exceptions.TooManyRedirects:
+        print('too Many Redirects')
+
+    except requests.exceptions.RequestException as err:
+        print('Something went wrong')
+
+        raise SystemExit(err)
+
+    return api_ref
+
+def get_web_call_w_payload(url, session, payload):
+
+    try:
+        api_ref = session.get(url, data = json.dumps(payload))
 
     except requests.exceptions.Timeout:
         print('Network Timeout')
@@ -60,7 +83,8 @@ def get_flow_export_policy(psm_ip, session):
 
 def get_dsc(psm_ip, session):
 
-    url = psm_ip + '/configs/cluster/v1/distributedservicecards'
+    url = psm_ip + 'configs/cluster/v1/distributedservicecards'
+    print (url)
     dsc = get_web_call(url, session).json()
 
     # pull out mac address of DSCs
@@ -95,8 +119,48 @@ def get_images(psm_ip, session):
     url = psm_ip + '/objstore/v1/tenant/default/images/objects'
     return get_web_call(url, session).json()
 
-def get_metrics(psm_ip, session, interface):
-    return None
+def get_psm_metrics(psm_ip, session, psm_tenant, st, et):
+
+    data = {
+    "queries": [
+        {
+            "Kind": "Node",
+            "start-time": st,
+            "end-time": et
+        }
+    ]
+}
+
+    url = psm_ip + 'telemetry/v1/metrics'
+
+    return get_web_call_w_payload(url, session, data).json()
+
+
+
+def get_dsc_metrics(psm_ip, session, psm_tenant, interface, st, et):
+
+    data = {
+    "queries": [
+        {
+            "Kind": "DistributedServiceCard",
+            "selector": {
+                "requirements": [
+                    {
+                        "key": "reporterID",
+                        "operator": "equals",
+                        "values": [interface]
+                    }
+                ]
+            },
+            "start-time": st,
+            "end-time": et
+        }
+                ]
+            }
+
+    url = psm_ip + 'telemetry/v1/metrics'
+
+    return get_web_call_w_payload(url, session, data).json()
 
 def get_fw_logs(psm_ip, session, psm_tenant, interface, st, et):
     connector = '_'
