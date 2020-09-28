@@ -4,3 +4,5 @@ idna==2.10
 kafka-python==2.0.1
 requests==2.24.0
 urllib3==1.25.10
+BytesIO
+gzip
