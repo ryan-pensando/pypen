@@ -9,15 +9,6 @@ kafkaTopic = 'sample'
 def fw_kfk(PSM_IP,session,PSM_TENANT, dsc_list, startTime, endTime):
     #kafka init
     producer = KafkaProducer(bootstrap_servers=kafkaServer)
-    #producer = KafkaProducer(bootstrap_servers='10.29.75.208:9092')
-
-
-    #kafka init
-    producer = KafkaProducer(bootstrap_servers=kafkaServer)
-#producer = KafkaProducer(bootstrap_servers='10.29.75.208:9092')
-
-
-#get the report time formated for Pensando DS
 
     for dsc in dsc_list:
         data = pen.get_fw_logs(PSM_IP,session,PSM_TENANT, dsc, startTime, endTime)
