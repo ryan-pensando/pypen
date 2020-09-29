@@ -3,7 +3,8 @@ import easygui
 import getpass
 import json
 
-#keyring.set_password("pensando", "admin", "Pensando0$")
+#Run this program first or anytime the username/password changes
+
 print ("Init program for pypen Python Library.")
 print ("This init program securly stores Pensando PSM connection details in OS keyring services ")
 print ("tenant and PSM IP address are stored in clear text")
