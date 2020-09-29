@@ -14,7 +14,6 @@
 # Author: Ryan Tischer - ryan@pensando.io
 
 import keyring
-import easygui
 import getpass
 import json
 
