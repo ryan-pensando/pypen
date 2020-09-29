@@ -237,14 +237,14 @@ def get_fw_logs(psm_ip, session, psm_tenant, interface, st, et):
 
     return w.content
 
-def get_alerts(psm_ip, session):
+def get_alerts(psm_ip, session, tenant):
 
     data = {
     "kind": "AlertPolicy",
     "api-version": "v1",
     "meta": {
         "name": "alertPolicy1",
-        "tenant": "default",
+        "tenant": tenant,
         "namespace": "default"
             }
             }

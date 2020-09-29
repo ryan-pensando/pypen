@@ -78,7 +78,7 @@ pen_2_kafka.send_2_kfk(uplinkMetrics)
 clusterMetrics = pen.get_cluster_metrics(PSM_IP, session, PSM_TENANT, startTime, endTime)
 pen_2_kafka.send_2_kfk(uplinkMetrics)
 
-psmAlerts =  (pen.get_alerts(PSM_IP, session))
+psmAlerts =  (pen.get_alerts(PSM_IP, session, PSM_TENANT))
 pen_2_kafka.send_2_kfk(psmAlerts)
 
 #pen_2_kafka.dsc_metrics_kfk(PSM_IP, session, PSM_TENANT, dsc_list, startTime, endTime)
