@@ -14,14 +14,29 @@
 # Author: Ryan Tischer ryan@pensando.io
 
 import pen, pen_auth, pen_quickstart, pen_2_kafka, utils
-import datetime
+import datetime, keyring, json
 
-#PSM Vars - Set before use
+#must run pypen_init first to set username and password
+#comment to use static vars below
+#start secure environment var
+creds =  (keyring.get_credential("pensando", "admin"))
+
+with open('pypen_init_data.json') as json_file:
+    jdata = json.load(json_file)
+    PSM_IP = jdata["ip"]
+    PSM_TENANT = jdata["tenant"]
+    PSM_USERNAME = creds.username
+    PSM_PASSWD = creds.password
+#end secure environment vars
+
+
+#static PSM vars.  Uncomment to use
+"""
 PSM_IP = 'https://10.29.75.21/'
-PSM_USERNAME = 'admin'
-PSM_PASSWD = 'Pensando0$'
 PSM_TENANT = 'default'
-
+PSM_USERNAME = "admin"
+PSM_PASSWD = creds.password
+"""
 
 session = pen_auth.psm_login(PSM_IP, PSM_USERNAME, PSM_PASSWD, PSM_TENANT)
 #session is used to authenicate future API calls to PSM.
