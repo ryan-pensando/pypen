@@ -35,7 +35,7 @@ def fw_kfk(PSM_IP,session,PSM_TENANT, dsc_list, startTime, endTime):
             producer.send(kafkaTopic, line)
 
 def dsc_metrics_kfk(PSM_IP,session,PSM_TENANT, dsc_list, startTime, endTime):
-    # Example - Sends DSC metrics to Kafka.
+    # Example - Sends DSC metrics to Kafka.  Probally easier do use send_2_kfk
     producer = KafkaProducer(bootstrap_servers=kafkaServer)
     for int in dsc_list:
         data = pen.get_dsc_metrics(PSM_IP, session, PSM_TENANT, int, startTime, endTime)

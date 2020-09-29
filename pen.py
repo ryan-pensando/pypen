@@ -16,10 +16,14 @@
 
 import json
 
-def get_web_call(url, session):
+def get_web_call(url, session, *payload):
 
+    if not payload:
+        data = {}
+    else:
+        data = payload[0]
     try:
-        api_ref = session.get(url)
+        api_ref = session.get(url, data=json.dumps(data))
 
     except requests.exceptions.Timeout:
         print('Network Timeout')
@@ -32,24 +36,7 @@ def get_web_call(url, session):
 
         raise SystemExit(err)
 
-    return api_ref
-
-def get_web_call_w_payload(url, session, payload):
-
-    try:
-        api_ref = session.get(url, data = json.dumps(payload))
-
-    except requests.exceptions.Timeout:
-        print('Network Timeout')
-
-    except requests.exceptions.TooManyRedirects:
-        print('too Many Redirects')
-
-    except requests.exceptions.RequestException as err:
-        print('Something went wrong')
-
-        raise SystemExit(err)
-
+    print (api_ref)
     return api_ref
 
 def post_web_call(url, session, data):
@@ -137,7 +124,7 @@ def get_psm_metrics(psm_ip, session, psm_tenant, st, et):
 
     url = psm_ip + 'telemetry/v1/metrics'
 
-    return get_web_call_w_payload(url, session, data).json()
+    return get_web_call(url, session, data).json()
 
 
 
@@ -164,7 +151,7 @@ def get_dsc_metrics(psm_ip, session, psm_tenant, interface, st, et):
 
     url = psm_ip + 'telemetry/v1/metrics'
 
-    return get_web_call_w_payload(url, session, data).json()
+    return get_web_call(url, session, data).json()
 
 
 def get_uplink_metrics(psm_ip, session, psm_tenant, st, et):
@@ -181,7 +168,7 @@ def get_uplink_metrics(psm_ip, session, psm_tenant, st, et):
 
     url = psm_ip + 'telemetry/v1/metrics'
 
-    return get_web_call_w_payload(url, session, data).json()
+    return get_web_call(url, session, data).json()
 
 def get_pf_metrics(psm_ip, session, psm_tenant, st, et):
 
@@ -197,7 +184,7 @@ def get_pf_metrics(psm_ip, session, psm_tenant, st, et):
 
     url = psm_ip + 'telemetry/v1/metrics'
 
-    return get_web_call_w_payload(url, session, data).json()
+    return get_web_call(url, session, data).json()
 
 def get_cluster_metrics(psm_ip, session, psm_tenant, st, et):
 
@@ -213,7 +200,7 @@ def get_cluster_metrics(psm_ip, session, psm_tenant, st, et):
 
     url = psm_ip + 'telemetry/v1/metrics'
 
-    return get_web_call_w_payload(url, session, data).json()
+    return get_web_call(url, session, data).json()
 
 def get_fw_logs(psm_ip, session, psm_tenant, interface, st, et):
     connector = '_'
@@ -251,7 +238,7 @@ def get_alerts(psm_ip, session, tenant):
 
     url = psm_ip + 'configs/monitoring/v1/alerts'
 
-    return get_web_call_w_payload(url, session, data).json()
+    return get_web_call(url, session, data).json()
 
 
 
