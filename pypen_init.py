@@ -24,16 +24,16 @@ print ("This init program securly stores Pensando PSM connection details in OS k
 print ("tenant and PSM IP address are stored in clear text")
 print ("---------------------------------------------------------")
 psm_temp_ip = input("Enter PSM IP address, for example 10.29.75.21: = ")
-psm_ip = "https://{ip}/".format(ip=psm_temp_ip)
+psm_ip = f"https://{psm_temp_ip}/"
 
 psm_tenant = input("Enter PSM tenant, for example default:  ")
 psm_admin = input("Enter PSM admin account: ")
 print ("---------------------------------------------------------")
 print ("")
 print ("Data Entered is ")
-print ("IP address = {ip}".format(ip = psm_ip))
-print ("Tenant = {t}".format(t=psm_tenant))
-print ("Username = {a}".format(a=psm_admin))
+print (f"IP address = {psm_ip}")
+print (f"Tenant = {psm_tenant}")
+print (f"Username = {psm_admin}")
 print ("password is a secert")
 print ("---------------------------------------------------------")
 
